@@ -13,6 +13,12 @@ const snakeBodyImage = document.getElementById('snakeBodyImage');
 const foodImage = document.getElementById('foodImage');
 const canvasBackground = document.getElementById('canvasBackground');
 
+// Show loading message
+ctx.fillStyle = 'black';
+ctx.font = '20px Arial';
+ctx.textAlign = 'center';
+ctx.fillText('Loading...', canvas.width / 2, canvas.height / 2);
+
 function drawGame() {
     // Move snake
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
@@ -74,10 +80,27 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-// Start the game when all images are loaded
-Promise.all([
-    new Promise(resolve => snakeHeadImage.onload = resolve),
-    new Promise(resolve => snakeBodyImage.onload = resolve),
-    new Promise(resolve => foodImage.onload = resolve),
-    new Promise(resolve => canvasBackground.onload = resolve)
-]).then(() => drawGame());
+// Wait for all images to load before starting
+const images = [snakeHeadImage, snakeBodyImage, foodImage, canvasBackground];
+let loadedCount = 0;
+
+function checkAllImagesLoaded() {
+    loadedCount++;
+    if (loadedCount === images.length) {
+        drawGame(); // Start the game only when all images are loaded
+    }
+}
+
+images.forEach(image => {
+    if (image.complete && image.naturalWidth !== 0) {
+        // If image is already cached/loaded
+        checkAllImagesLoaded();
+    } else {
+        // Wait for load event
+        image.onload = checkAllImagesLoaded;
+        image.onerror = () => {
+            console.error(`Failed to load image: ${image.src}`);
+            checkAllImagesLoaded(); // Proceed anyway to avoid hanging
+        };
+    }
+});
