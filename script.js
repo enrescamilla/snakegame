@@ -1,10 +1,10 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const gridSize = 20;
-const maxCanvasSize = 400;
+const maxCanvasSize = 600; // Aumentado para PC
 const canvasSize = Math.min(window.innerWidth - 40, maxCanvasSize);
 canvas.width = canvasSize;
-canvas.height = canvasSize; // Cuadrado
+canvas.height = canvasSize;
 const tileCount = canvas.width / gridSize;
 let snake = [{ x: Math.floor(tileCount / 2), y: Math.floor(tileCount / 2) }];
 let food = { x: Math.floor(tileCount * 0.75), y: Math.floor(tileCount * 0.75) };
@@ -24,11 +24,9 @@ ctx.textAlign = 'center';
 ctx.fillText('Loading...', canvas.width / 2, canvas.height / 2);
 
 function drawGame() {
-    // Mover serpiente
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
     snake.unshift(head);
 
-    // Verificar comida
     if (head.x === food.x && head.y === food.y) {
         score += 1;
         scoreDisplay.textContent = score;
@@ -40,7 +38,6 @@ function drawGame() {
         snake.pop();
     }
 
-    // Dibujar fondo
     if (canvasBackground.complete && canvasBackground.naturalWidth > 0) {
         ctx.drawImage(canvasBackground, 0, 0, canvas.width, canvas.height);
     } else {
@@ -48,7 +45,6 @@ function drawGame() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    // Dibujar serpiente
     if (snakeHeadImage.complete && snakeHeadImage.naturalWidth > 0) {
         ctx.drawImage(snakeHeadImage, snake[0].x * gridSize, snake[0].y * gridSize, gridSize, gridSize);
     } else {
@@ -64,7 +60,6 @@ function drawGame() {
         }
     });
 
-    // Dibujar comida
     if (foodImage.complete && foodImage.naturalWidth > 0) {
         ctx.drawImage(foodImage, food.x * gridSize, food.y * gridSize, gridSize, gridSize);
     } else {
@@ -72,7 +67,6 @@ function drawGame() {
         ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
     }
 
-    // Verificar colisiones
     if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount ||
         snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)) {
         alert('Game Over! Tu puntación: ' + score);
@@ -86,7 +80,7 @@ function drawGame() {
     setTimeout(drawGame, 100);
 }
 
-// Controles con teclas (PC)
+// Controles PC
 document.addEventListener('keydown', (event) => {
     switch (event.key) {
         case 'ArrowUp':
@@ -104,7 +98,7 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-// Controles táctiles con deslizamiento (celular)
+// Controles celular
 let touchStartX = 0;
 let touchStartY = 0;
 
@@ -122,19 +116,18 @@ canvas.addEventListener('touchmove', (event) => {
     const deltaY = touch.clientY - touchStartY;
 
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
-        if (deltaX > 0 && dx === 0) { dx = 1; dy = 0; } // Derecha
-        else if (deltaX < 0 && dx === 0) { dx = -1; dy = 0; } // Izquierda
+        if (deltaX > 0 && dx === 0) { dx = 1; dy = 0; }
+        else if (deltaX < 0 && dx === 0) { dx = -1; dy = 0; }
     } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 20) {
-        if (deltaY > 0 && dy === 0) { dx = 0; dy = 1; } // Abajo
-        else if (deltaY < 0 && dy === 0) { dx = 0; dy = -1; } // Arriba
+        if (deltaY > 0 && dy === 0) { dx = 0; dy = 1; }
+        else if (deltaY < 0 && dy === 0) { dx = 0; dy = -1; }
     }
 
-    // Reiniciar posición inicial para el próximo deslizamiento
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
 });
 
-// Cargar imágenes y empezar
+// Carga de imágenes
 const images = [snakeHeadImage, snakeBodyImage, foodImage, canvasBackground];
 let loadedCount = 0;
 
@@ -157,12 +150,11 @@ images.forEach(image => {
         };
         image.onerror = () => {
             console.error(`Error cargando: ${image.src}`);
-            checkAllImagesLoaded(); // Continúa aunque falle
+            checkAllImagesLoaded();
         };
     }
 });
 
-// Iniciar después de 5 segundos si las imágenes no cargan
 setTimeout(() => {
     if (loadedCount < images.length) {
         console.log('Timeout: iniciando juego sin todas las imágenes');
