@@ -1,7 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const gridSize = 20;
-const maxCanvasSize = 600; // Aumentado para PC
+const maxCanvasSize = 450; // Reducido para PC
 const canvasSize = Math.min(window.innerWidth - 40, maxCanvasSize);
 canvas.width = canvasSize;
 canvas.height = canvasSize;

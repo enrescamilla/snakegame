@@ -17,30 +17,30 @@ h1 {
     color: #fff;
     text-shadow: 1px 1px 2px #000;
     margin: 10px 0;
-    font-size: 2em; /* Tamaño relativo para pantallas grandes */
+    font-size: 1.5em; /* Reducido para PC */
 }
 
 p {
     color: #fff;
     text-shadow: 1px 1px 2px #000;
     margin: 5px 0;
-    font-size: 1.2em; /* Tamaño relativo */
+    font-size: 1em; /* Reducido para PC */
 }
 
 #gameCanvas {
     border: 1px solid black;
-    max-width: 600px; /* Tamaño máximo más grande para PC */
+    max-width: 450px; /* Reducido para PC */
     width: 100%; /* Se adapta a pantallas pequeñas */
     touch-action: none;
 }
 
 /* Ajustes para pantallas pequeñas */
-@media (max-width: 600px) {
+@media (max-width: 450px) {
     h1 {
-        font-size: 1.5em; /* Reduce el tamaño en celular */
+        font-size: 1.2em; /* Más pequeño en celular */
     }
     p {
-        font-size: 1em;
+        font-size: 0.9em;
     }
     #gameCanvas {
         max-width: 100%; /* Ocupa todo el ancho en celular */
