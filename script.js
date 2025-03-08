@@ -1,9 +1,10 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const gridSize = 20;
-let canvasSize = Math.min(window.innerWidth - 40, 400); // Máximo 400px o ancho de pantalla menos márgenes
+const maxCanvasSize = 400; // Tamaño máximo
+const canvasSize = Math.min(window.innerWidth - 40, maxCanvasSize); // Ancho basado en pantalla
 canvas.width = canvasSize;
-canvas.height = canvasSize;
+canvas.height = canvasSize; // Alto igual al ancho para mantener cuadrado
 const tileCount = canvas.width / gridSize;
 let snake = [{ x: Math.floor(tileCount / 2), y: Math.floor(tileCount / 2) }];
 let food = { x: Math.floor(tileCount * 0.75), y: Math.floor(tileCount * 0.75) };
@@ -65,7 +66,7 @@ function drawGame() {
     setTimeout(drawGame, 100); // Velocidad del juego
 }
 
-// Controles con teclas
+// Controles con teclas (para PC)
 document.addEventListener('keydown', (event) => {
     switch (event.key) {
         case 'ArrowUp':
@@ -83,18 +84,31 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-// Controles con botones táctiles
-document.getElementById('up').addEventListener('click', () => {
-    if (dy === 0) { dx = 0; dy = -1; }
+// Controles táctiles con deslizamiento
+let touchStartX = 0;
+let touchStartY = 0;
+
+canvas.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    const touch = event.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
 });
-document.getElementById('down').addEventListener('click', () => {
-    if (dy === 0) { dx = 0; dy = 1; }
-});
-document.getElementById('left').addEventListener('click', () => {
-    if (dx === 0) { dx = -1; dy = 0; }
-});
-document.getElementById('right').addEventListener('click', () => {
-    if (dx === 0) { dx = 1; dy = 0; }
+
+canvas.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+
+    // Detectar dirección del deslizamiento (mínimo 20px para evitar movimientos accidentales)
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
+        if (deltaX > 0 && dx === 0) { dx = 1; dy = 0; } // Derecha
+        else if (deltaX < 0 && dx === 0) { dx = -1; dy = 0; } // Izquierda
+    } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 20) {
+        if (deltaY > 0 && dy === 0) { dx = 0; dy = 1; } // Abajo
+        else if (deltaY < 0 && dy === 0) { dx = 0; dy = -1; } // Arriba
+    }
 });
 
 // Esperar a que carguen las imágenes
