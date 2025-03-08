@@ -1,0 +1,19 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-image: url('background_site.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    height: 100vh;
+}
+
+h1 {
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
+#gameCanvas {
+    border: 1px solid black;
+}
