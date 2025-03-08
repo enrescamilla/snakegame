@@ -28,6 +28,6 @@ p {
 #gameCanvas {
     border: 1px solid black;
     max-width: 100%;
-    width: 100%; /* Asegura que use el ancho disponible */
-    touch-action: none; /* Evita que el navegador interfiera con los toques */
+    width: 100%;
+    touch-action: none;
 }
