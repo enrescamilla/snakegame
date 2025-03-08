@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel La Fuente</title>
+    <title>Snake Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>En Hotel La Fuente ¡nos encanta consentirte!</h1>
-    <p>Puntaje: <span id="score">0</span></p>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <h1>Snake Game</h1>
+    <p>Score: <span id="score">0</span></p>
+    <canvas id="gameCanvas"></canvas>
+    <div id="controls">
+        <button id="up">↑</button>
+        <div>
+            <button id="left">←</button>
+            <button id="right">→</button>
+        </div>
+        <button id="down">↓</button>
+    </div>
     <img id="snakeHeadImage" src="snake_head.png" style="display:none;">
     <img id="snakeBodyImage" src="snake_body.png" style="display:none;">
     <img id="foodImage" src="apple.png" style="display:none;">
